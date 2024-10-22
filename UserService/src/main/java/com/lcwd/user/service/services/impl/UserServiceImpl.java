@@ -16,6 +16,7 @@ import com.lcwd.user.service.entities.Rating;
 import com.lcwd.user.service.entities.User;
 import com.lcwd.user.service.exceptions.ResourceNotFoundException;
 import com.lcwd.user.service.external.service.HotelService;
+import com.lcwd.user.service.external.service.RatingService;
 import com.lcwd.user.service.repositories.UserRepository;
 import com.lcwd.user.service.services.UserService;
 
@@ -30,6 +31,9 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	private HotelService hotelService;
+	
+	@Autowired
+	private RatingService ratingService;
 	
 	// private Logger logger= (Logger) LoggerFactory.getLogger(UserServiceImpl.class);
 	
@@ -54,7 +58,9 @@ public class UserServiceImpl implements UserService{
 	
 		// fetch rating of the above user from USER SERVICE
 		// http://localhost:8083/rating/users/userId
-		Rating[] ratingOfUser = restTemplate.getForObject("http://RATINGSERVICE/rating/users/"+user.getUserId(), Rating[].class);
+//		Rating[] ratingOfUser = restTemplate.getForObject("http://RATINGSERVICE/rating/users/"+user.getUserId(), Rating[].class);
+		
+		Rating[] ratingOfUser = ratingService.getByUserId(userId);
 		
 		List<Rating> ratings = Arrays.stream(ratingOfUser).toList();
 		
